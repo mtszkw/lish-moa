@@ -2,10 +2,21 @@
 
 Final code for Kaggle [lish-moa](https://www.kaggle.com/c/lish-moa/) competition.
 
-### Description
+### Pre-processing/feature engineering
 
-- Single NN model with few linear layers (see [/src/model.py](src/model.py)),
-- Pre-processing/feature engineering: [QuantileTransform](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.QuantileTransformer.html), [PCA](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html), [VarianceThreshold](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.VarianceThreshold.html)
+- Using `g-` (genes) and `c-` (cells) features,
+- [PCA](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html),
+- [QuantileTransform](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.QuantileTransformer.html),
+- [VarianceThreshold](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.VarianceThreshold.html),
+
+### Training
+- `MultilabelStratifiedKFold` instead of traditional sklearn KFold
+- Single NN model with only few linear layers (see [/src/model.py](src/model.py)),
+- `SmoothBCEwLogits` loss function for training (`torch.nn.BCEWithLogitsLoss` for validation)
+
+### Prediction
+- Prediciton clipping (`np.clip(y_hat, 0.001, 0.999)`)
+- Averaging results from best folds (best val_loss checkpoint from each fold)
 
 ### Additional data
 
